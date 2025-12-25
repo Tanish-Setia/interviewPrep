@@ -1,0 +1,138 @@
+.quiz-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.quiz-header {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #4b5563;
+}
+
+.quiz-header h1 {
+  font-size: 24px;
+  color: #1f2937;
+  margin: 0;
+  flex: 1;
+}
+
+.quiz-stats {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.stat {
+  padding: 8px 16px;
+  background: white;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat.correct {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.stat.wrong {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.progress-container {
+  max-width: 900px;
+  margin: 0 auto 20px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 14px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.loading, .no-questions {
+  text-align: center;
+  padding: 60px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.no-questions h2 {
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.no-questions p {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.no-questions button {
+  padding: 12px 24px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.no-questions button:hover {
+  background: #2563eb;
+}
+
+@media (max-width: 768px) {
+  .quiz-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .quiz-header h1 {
+    font-size: 20px;
+  }
+
+  .quiz-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
