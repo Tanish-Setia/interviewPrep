@@ -4,7 +4,7 @@ import api from '../services/api';
 import './Subscription.css';
 
 const Subscription = () => {
-  const { fetchSubscriptionStatus: refreshAuthSubscription } = useAuth(); // ✅ Get from context
+  const { fetchSubscriptionStatus: refreshAuthSubscription } = useAuth(); 
   const [plans, setPlans] = useState({});
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,7 +14,6 @@ const Subscription = () => {
     fetchPlans();
     fetchSubscriptionStatus();
     
-    // Load Razorpay script
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
@@ -55,15 +54,13 @@ const Subscription = () => {
 
     setProcessing(true);
     try {
-      // Create order
+
       const orderResponse = await api.post('/subscriptions/create-checkout', { planId });
       const { orderId, amount, currency, keyId, planName } = orderResponse.data;
 
-      // Get user info from localStorage
       const userStr = localStorage.getItem('user');
       const user = userStr ? JSON.parse(userStr) : {};
 
-      // Razorpay options
       const options = {
         key: keyId,
         amount: amount,
@@ -73,7 +70,6 @@ const Subscription = () => {
         order_id: orderId,
         handler: async function (response) {
           try {
-            // Verify payment
             await api.post('/subscriptions/verify-payment', {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
@@ -81,16 +77,15 @@ const Subscription = () => {
               planId: planId
             });
 
-            alert('✅ Payment successful! Your subscription is now active.');
+            alert('Payment successful! Your subscription is now active.');
             
-            // ✅ Refresh subscription in BOTH AuthContext and local state
             await refreshAuthSubscription();
             await fetchSubscriptionStatus();
             
             setProcessing(false);
           } catch (error) {
             console.error('Payment verification error:', error);
-            alert('❌ Payment verification failed. Please contact support.');
+            alert('Payment verification failed. Please contact support.');
             setProcessing(false);
           }
         },

@@ -49,4 +49,3 @@ chatSessionSchema.pre('save', function(next) {
 });
 
 module.exports = mongoose.model('ChatSession', chatSessionSchema);
-

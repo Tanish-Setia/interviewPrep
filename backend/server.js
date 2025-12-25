@@ -12,27 +12,22 @@ dotenv.config();
 
 const app = express();
 
-// Create uploads directory
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
-
-// ✅ FIXED CORS Configuration - allow multiple origins
 const allowedOrigins = [
-  'http://localhost:3000',  // Local development
-  'https://interview-prep-a9y7vd6fk-tanishs-projects-9945e9a9.vercel.app',  // Vercel deployment URL
-  'https://interview-prep-kappa-umber.vercel.app'  // Vercel custom domain
+  'http://localhost:3000',  
+  'https://interview-prep-a9y7vd6fk-tanishs-projects-9945e9a9.vercel.app',
+  'https://interview-prep-kappa-umber.vercel.app'  
 ];
 
-// Add FRONTEND_URL from environment if it exists
 if (process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);
 }
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, Postman)
     if (!origin) return callback(null, true);
     
     if (allowedOrigins.indexOf(origin) === -1) {

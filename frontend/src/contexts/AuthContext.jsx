@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   const [subscription, setSubscription] = useState(null);
   const [subLoading, setSubLoading] = useState(true);
 
-  // ✅ Use useCallback to memoize fetchSubscriptionStatus
   const fetchSubscriptionStatus = useCallback(async () => {
     try {
       setSubLoading(true);
@@ -29,15 +28,13 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setSubLoading(false);
     }
-  }, []); // No dependencies needed
+  }, []); 
 
-  // ✅ Use useCallback to memoize checkAuth
   const checkAuth = useCallback(async () => {
     try {
       const response = await api.get('/auth/me');
       setUser(response.data.user);
       
-      // Fetch subscription status after user is authenticated
       await fetchSubscriptionStatus();
     } catch (error) {
       setUser(null);
@@ -46,21 +43,19 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
       setSubLoading(false);
     }
-  }, [fetchSubscriptionStatus]); // Depends on fetchSubscriptionStatus
+  }, [fetchSubscriptionStatus]); 
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]); // ✅ Now checkAuth is in the dependency array
+  }, [checkAuth]); 
 
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
       
-      // Save user data
       setUser(response.data.user);
       
-      // Fetch subscription after login
       await fetchSubscriptionStatus();
       
       return { success: true };
@@ -80,7 +75,6 @@ export const AuthProvider = ({ children }) => {
       }
       setUser(response.data.user);
       
-      // Fetch subscription after signup (will be null for new users)
       await fetchSubscriptionStatus();
       
       return { success: true };

@@ -72,4 +72,3 @@ profileSchema.pre('save', function(next) {
 });
 
 module.exports = mongoose.model('Profile', profileSchema);
-

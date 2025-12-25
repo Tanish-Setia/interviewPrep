@@ -10,24 +10,20 @@ const {
   importQuestionsFromCategory 
 } = require('../services/sanfoundryService');
 
-// Get all MCQ questions with filters
 router.get('/mcq', auth, requireSubscription, async (req, res) => {
   try {
     const { category, company, difficulty, limit = 20, page = 1 } = req.query;
     
     const query = { type: 'mcq' };
     
-    // ✅ Filter by category (case-insensitive, matches inside tags array)
     if (category) {
       query.tags = { $in: [new RegExp(`^${category}$`, 'i')] };
     }
     
-    // Filter by difficulty
     if (difficulty) {
       query.difficulty = difficulty;
     }
     
-    // Company-specific questions (premium only)
     if (company) {
       const subscription = await Subscription.findOne({
         userId: req.user._id,
@@ -74,7 +70,6 @@ router.get('/mcq', auth, requireSubscription, async (req, res) => {
   }
 });
 
-// Get single question by ID
 router.get('/:id', auth, async (req, res) => {
   try {
     const question = await Question.findById(req.params.id)
@@ -85,7 +80,6 @@ router.get('/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'Question not found' });
     }
     
-    // Check if it's a company-specific question
     if (question.companyId) {
       const subscription = await Subscription.findOne({
         userId: req.user._id,
@@ -108,10 +102,6 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// Get available Sanfoundry categories
-// In backend/src/routes/questions.js
-
-// Get available Sanfoundry categories
 router.get('/sanfoundry/categories', async (req, res) => {
   try {
     const { fetchAllCategoriesFromGithub } = require('../services/sanfoundryService');
@@ -124,7 +114,6 @@ router.get('/sanfoundry/categories', async (req, res) => {
 });
 
 
-// Import questions from Sanfoundry
 router.post('/sanfoundry/import', auth, async (req, res) => {
   try {
     const { categoryTitle, limit = 50 } = req.body;
@@ -142,10 +131,9 @@ router.post('/sanfoundry/import', auth, async (req, res) => {
       limit
     );
     console.log('TRANSFORMED QUESTIONS COUNT:', transformedQuestions.length);
-    // Save to database
     const savedQuestions = await Question.insertMany(transformedQuestions);
     
-    console.log(`✅ Imported ${savedQuestions.length} questions`);
+    console.log(` Imported ${savedQuestions.length} questions`);
     
     res.json({
       message: `Successfully imported ${savedQuestions.length} questions`,
@@ -160,10 +148,8 @@ router.post('/sanfoundry/import', auth, async (req, res) => {
   }
 });
 
-// Get all companies (for premium users)
 router.get('/companies/list', auth, async (req, res) => {
   try {
-    // Check subscription
     const subscription = await Subscription.findOne({
       userId: req.user._id,
       status: 'active',
@@ -185,7 +171,6 @@ router.get('/companies/list', auth, async (req, res) => {
   }
 });
 
-// Create company (admin only - you can add admin middleware)
 router.post('/companies', auth, async (req, res) => {
   try {
     const { name, domain, description } = req.body;

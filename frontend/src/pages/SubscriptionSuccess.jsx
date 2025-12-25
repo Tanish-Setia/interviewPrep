@@ -9,7 +9,6 @@ const SubscriptionSuccess = () => {
   const [subscription, setSubscription] = useState(null);
 
   useEffect(() => {
-    // Fetch the latest subscription to confirm it's active
     fetchSubscription();
   }, []);
 
@@ -21,7 +20,6 @@ const SubscriptionSuccess = () => {
         setSubscription(response.data.subscription);
         setLoading(false);
       } else {
-        // No active subscription found, redirect back
         setTimeout(() => {
           navigate('/subscription');
         }, 2000);

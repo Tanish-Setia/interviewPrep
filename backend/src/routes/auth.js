@@ -50,7 +50,7 @@ router.post('/signup', [
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
     res.status(201).json({
@@ -118,7 +118,7 @@ router.post('/login', [
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
     res.json({
@@ -163,4 +163,3 @@ router.get('/me', require('../middlewares/auth').auth, async (req, res) => {
 });
 
 module.exports = router;
-

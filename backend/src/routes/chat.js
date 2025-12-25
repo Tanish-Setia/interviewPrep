@@ -94,4 +94,3 @@ router.delete('/session', auth, async (req, res) => {
 });
 
 module.exports = router;
-

@@ -6,7 +6,6 @@ const QuestionView = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // ✅ Wrap in useMemo to prevent re-creation on every render
   const questionsFromState = useMemo(() => {
     return location.state?.questions || [];
   }, [location.state]);
@@ -26,9 +25,6 @@ const QuestionView = () => {
       navigate('/practice');
     }
   }, [questionsFromState, navigate]);
-
-  // ... rest of your code stays the same
-
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
@@ -97,7 +93,6 @@ const QuestionView = () => {
     );
   }
 
-  // Quiz completion screen
   if (quizCompleted) {
     const percentage = ((score / questionsFromState.length) * 100).toFixed(1);
     
@@ -139,7 +134,6 @@ const QuestionView = () => {
           ← Back to Practice
         </button>
 
-        {/* Progress Bar */}
         <div style={{
           background: '#e5e7eb',
           height: '8px',

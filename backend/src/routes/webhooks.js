@@ -5,10 +5,8 @@ const Payment = require('../models/Payment');
 
 const router = express.Router();
 
-// Razorpay webhook endpoint
 router.post('/razorpay', express.json(), async (req, res) => {
   try {
-    // Verify webhook signature
     const signature = req.headers['x-razorpay-signature'];
     const body = JSON.stringify(req.body);
     
@@ -18,24 +16,23 @@ router.post('/razorpay', express.json(), async (req, res) => {
       .digest('hex');
 
     if (signature !== expectedSignature) {
-      console.error('❌ Invalid webhook signature');
+      console.error('Invalid webhook signature');
       return res.status(400).json({ error: 'Invalid signature' });
     }
 
     const event = req.body.event;
     const payload = req.body.payload;
 
-    console.log('✅ Webhook received:', event);
+    console.log('Webhook received:', event);
 
     switch (event) {
       case 'payment.captured': {
         console.log('💰 Payment captured:', payload.payment.entity.id);
-        // Payment is already handled in verify-payment endpoint
         break;
       }
 
       case 'payment.failed': {
-        console.log('❌ Payment failed:', payload.payment.entity.id);
+        console.log('Payment failed:', payload.payment.entity.id);
         
         const paymentEntity = payload.payment.entity;
         const userId = paymentEntity.notes?.userId;
@@ -54,18 +51,16 @@ router.post('/razorpay', express.json(), async (req, res) => {
       }
 
       case 'refund.created': {
-        console.log('💸 Refund created:', payload.refund.entity.id);
+        console.log('Refund created:', payload.refund.entity.id);
         
         const refundEntity = payload.refund.entity;
         const paymentId = refundEntity.payment_id;
 
-        // Update payment status
         await Payment.updateOne(
           { providerId: paymentId },
           { status: 'refunded' }
         );
 
-        // Cancel related subscription
         await Subscription.updateOne(
           { providerSubscriptionId: paymentId },
           { status: 'cancelled' }
@@ -74,12 +69,12 @@ router.post('/razorpay', express.json(), async (req, res) => {
       }
 
       default:
-        console.log(`ℹ️ Unhandled event: ${event}`);
+        console.log(`Unhandled event: ${event}`);
     }
 
     res.json({ status: 'ok' });
   } catch (error) {
-    console.error('❌ Webhook error:', error);
+    console.error('Webhook error:', error);
     res.status(500).json({ error: 'Webhook processing failed' });
   }
 });

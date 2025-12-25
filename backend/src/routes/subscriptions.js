@@ -7,18 +7,16 @@ const Payment = require('../models/Payment');
 
 const router = express.Router();
 
-// Initialize Razorpay
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-// Plans configuration
 const PLANS = {
   basic: {
     name: 'Basic Plan',
     price: 0,
-    duration: 365, // Free forever
+    duration: 365, 
     features: [
       'General practice questions',
       'Resume upload & analysis',
@@ -41,7 +39,6 @@ const PLANS = {
   }
 };
 
-// Get subscription status
 router.get('/status', auth, async (req, res) => {
   try {
     const subscription = await Subscription.findOne({
@@ -60,12 +57,10 @@ router.get('/status', auth, async (req, res) => {
   }
 });
 
-// Get available plans
 router.get('/plans', (req, res) => {
   res.json({ plans: PLANS });
 });
 
-// Create Razorpay order
 router.post('/create-checkout', auth, async (req, res) => {
   try {
     const { planId } = req.body;
@@ -80,9 +75,8 @@ router.post('/create-checkout', auth, async (req, res) => {
       return res.status(400).json({ message: 'Basic plan is free' });
     }
 
-    // Create Razorpay order
     const order = await razorpay.orders.create({
-      amount: plan.price * 100, // Amount in paise
+      amount: plan.price * 100, 
       currency: 'INR',
       receipt: `order_${Date.now()}`,
       notes: {
@@ -93,7 +87,7 @@ router.post('/create-checkout', auth, async (req, res) => {
       }
     });
 
-    console.log('✅ Razorpay order created:', order.id);
+    console.log(' Razorpay order created:', order.id);
 
     res.json({
       orderId: order.id,
@@ -108,7 +102,6 @@ router.post('/create-checkout', auth, async (req, res) => {
   }
 });
 
-// Verify payment and create subscription
 router.post('/verify-payment', auth, async (req, res) => {
   try {
     const { 
@@ -118,7 +111,6 @@ router.post('/verify-payment', auth, async (req, res) => {
       planId 
     } = req.body;
 
-    // Verify signature
     const sign = razorpay_order_id + '|' + razorpay_payment_id;
     const expectedSign = crypto
       .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
@@ -131,7 +123,6 @@ router.post('/verify-payment', auth, async (req, res) => {
 
     console.log('✅ Payment signature verified');
 
-    // Fetch payment details from Razorpay
     const payment = await razorpay.payments.fetch(razorpay_payment_id);
 
     if (payment.status !== 'captured') {
@@ -140,12 +131,10 @@ router.post('/verify-payment', auth, async (req, res) => {
 
     const plan = PLANS[planId];
     
-    // Calculate subscription dates
     const startsAt = new Date();
     const endsAt = new Date();
     endsAt.setDate(endsAt.getDate() + plan.duration);
 
-    // Create subscription
     const subscription = await Subscription.create({
       userId: req.user._id,
       planId: planId,
@@ -155,9 +144,8 @@ router.post('/verify-payment', auth, async (req, res) => {
       endsAt: endsAt
     });
 
-    console.log('✅ Subscription created:', subscription._id);
+    console.log(' Subscription created:', subscription._id);
 
-    // Create payment record
     await Payment.create({
       userId: req.user._id,
       amount: payment.amount / 100,
@@ -179,7 +167,6 @@ router.post('/verify-payment', auth, async (req, res) => {
   }
 });
 
-// Get subscription history
 router.get('/history', auth, async (req, res) => {
   try {
     const subscriptions = await Subscription.find({ userId: req.user._id })
@@ -192,7 +179,7 @@ router.get('/history', auth, async (req, res) => {
   }
 });
 
-// Cancel subscription
+
 router.post('/cancel', auth, async (req, res) => {
   try {
     const subscription = await Subscription.findOne({
@@ -208,7 +195,7 @@ router.post('/cancel', auth, async (req, res) => {
     subscription.status = 'cancelled';
     await subscription.save();
 
-    console.log('✅ Subscription cancelled:', subscription._id);
+    console.log('Subscription cancelled:', subscription._id);
 
     res.json({ 
       message: 'Subscription cancelled successfully',

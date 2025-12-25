@@ -35,7 +35,6 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/about" element={<About />} />
 
-              {/* Sanfoundry quiz routes */}
               <Route
                 path="/practice/sanfoundry/:category"
                 element={
@@ -61,7 +60,6 @@ function App() {
                 }
               />
 
-              {/* Profile */}
               <Route
                 path="/profile"
                 element={
@@ -71,7 +69,6 @@ function App() {
                 }
               />
 
-              {/* Practice page */}
               <Route
                 path="/practice"
                 element={
@@ -81,7 +78,6 @@ function App() {
                 }
               />
 
-              {/* Single question view */}
               <Route
                 path="/questions/quiz"
                 element={
@@ -91,7 +87,6 @@ function App() {
                 }
               />
 
-              {/* Subscription */}
               <Route
                 path="/subscription"
                 element={
@@ -132,7 +127,6 @@ function App() {
                 }
               />
 
-              {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>

@@ -1,4 +1,3 @@
-// backend/src/middlewares/requireSubscription.js
 const Subscription = require('../models/Subscription');
 
 async function requireSubscription(req, res, next) {

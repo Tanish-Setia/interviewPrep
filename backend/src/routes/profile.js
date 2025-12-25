@@ -53,4 +53,3 @@ router.put('/', auth, async (req, res) => {
 });
 
 module.exports = router;
-

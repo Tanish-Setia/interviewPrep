@@ -36,7 +36,6 @@
   flex-wrap: wrap;
 }
 
-/* ✅ Override btn-outline to match btn-primary style */
 .hero-cta .btn-outline {
   background-color: var(--primary-color) !important;
   color: white !important;
@@ -228,8 +227,6 @@
   margin-bottom: 32px;
   opacity: 0.95;
 }
-
-/* Add this at the end of your LandingPage.css file, before the @media query */
 
 .cta .btn-primary {
   background: white !important;

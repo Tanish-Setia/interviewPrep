@@ -1,12 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',  // ✅ Fixed
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',  
   withCredentials: true,
-  // ✅ Removed default Content-Type - axios will auto-detect
 });
 
-// ✅ ADD TOKEN TO ALL REQUESTS
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -22,7 +20,6 @@ api.interceptors.request.use(
   }
 );
 
-// ✅ Response interceptor - good as is
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -40,7 +37,6 @@ api.interceptors.response.use(
   }
 );
 
-// ✅ API methods - good as is
 export const getMCQQuestions = async (params) => {
   const response = await api.get('/questions/mcq', { params });
   return response.data;

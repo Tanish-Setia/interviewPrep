@@ -13,7 +13,7 @@ const Practice = () => {
   const [qLoading, setQLoading] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [importing, setImporting] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // ✅ Search state
+  const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,7 +90,6 @@ const Practice = () => {
     }
   };
 
-  // ✅ Filter topics based on search query
   const filteredTopics = topics.filter((topic) =>
     topic.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -169,13 +168,11 @@ const Practice = () => {
   return (
     <div className="practice-page">
       <div className="container">
-        {/* Header */}
         <div className="page-header">
           <h1>Practice MCQs</h1>
           <p>Choose a topic and start practicing with hundreds of questions</p>
         </div>
 
-        {/* ✅ Search Bar */}
         <div className="search-section">
           <div className="search-bar">
             <span className="search-icon">🔍</span>
@@ -201,7 +198,6 @@ const Practice = () => {
           </p>
         </div>
 
-        {/* Topics Grid */}
         <div className="practice-section">
           <h2>Available Topics</h2>
           
@@ -255,7 +251,7 @@ const Practice = () => {
           )}
         </div>
 
-        {/* Questions Section */}
+        
         {(questions.length > 0 || qLoading) && (
           <div className="practice-section" id="questions-section">
             <h2>
@@ -332,7 +328,6 @@ const Practice = () => {
           </div>
         )}
 
-        {/* Empty State */}
         {!qLoading && questions.length === 0 && selectedTopic && (
           <div className="premium-locked">
             <div className="lock-icon">📝</div>

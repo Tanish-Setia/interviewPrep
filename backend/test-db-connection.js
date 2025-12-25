@@ -1,9 +1,3 @@
-/**
- * Test MongoDB Connection
- * Run this script to verify MongoDB connectivity
- * Usage: node test-db-connection.js
- */
-
 require('dotenv').config();
 const mongoose = require('mongoose');
 
@@ -17,7 +11,7 @@ mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true
 })
   .then(async () => {
-    console.log('✅ Successfully connected to MongoDB!');
+    console.log('Successfully connected to MongoDB!');
     
     try {
       const db = mongoose.connection.db;

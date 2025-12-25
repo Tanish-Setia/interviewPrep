@@ -4,10 +4,6 @@ const { auth } = require('../middlewares/auth');
 const Question = require('../models/Question');
 const sanfoundryService = require('../services/sanfoundryService');
 
-/**
- * GET /api/sanfoundry/topics
- * Get all available topics
- */
 router.get('/topics', (req, res) => {
   try {
     const topics = sanfoundryService.getAvailableTopics();
@@ -24,11 +20,6 @@ router.get('/topics', (req, res) => {
   }
 });
 
-/**
- * GET /api/sanfoundry/questions/:topic
- * Get questions for a specific topic
- * Query params: page, limit
- */
 router.get('/questions/:topic', (req, res) => {
   try {
     const { topic } = req.params;
@@ -55,10 +46,6 @@ router.get('/questions/:topic', (req, res) => {
   }
 });
 
-/**
- * POST /api/sanfoundry/import/:topic
- * Import questions from topic to MongoDB (requires auth)
- */
 router.post('/import/:topic', auth, async (req, res) => {
   try {
     const { topic } = req.params;
@@ -79,10 +66,6 @@ router.post('/import/:topic', auth, async (req, res) => {
   }
 });
 
-/**
- * GET /api/sanfoundry/search
- * Search topics by name
- */
 router.get('/search', (req, res) => {
   try {
     const { q } = req.query;
