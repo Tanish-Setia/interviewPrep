@@ -9,6 +9,7 @@ const fs = require('fs');
 const sanfoundryRoutes = require('./src/routes/sanfoundry');
 
 dotenv.config();
+require('./src/utils/redisClient');
 
 const app = express();
 
